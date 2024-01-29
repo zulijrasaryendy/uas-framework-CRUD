@@ -17,7 +17,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Username</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Article Count</th>
                     <th scope="col">Total Article Views</th>
                     <th scope="col">Comment Count</th>
@@ -29,7 +29,7 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $user->username }}</td>
+                        <td>{{ $user->name }}</td>
                         <td>{{ $user->articles->count() }}</td>
                         <td>{{ $user->articles->pluck('views')->sum() }}</td>
                         <td>{{ $user->comments->count() }}</td>

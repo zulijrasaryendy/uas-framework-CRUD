@@ -45,6 +45,7 @@ class AdminUsersController extends Controller
             "role" => 'required',
         ]);
         $validatedData['password'] = bcrypt($validatedData['password']);
+        $validatedData['is_admin'] = $validatedData["role"];
         User::create($validatedData);
 
         return redirect('/dashboard/users')->with('success', 'Registration successfull!');
@@ -69,7 +70,7 @@ class AdminUsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('dashboard.users.edit', ['user' => $user]);
     }
 
     /**
@@ -81,7 +82,16 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validatedData = $request->validate([
+            "name" => 'required|max:255',
+            "username" => 'required|unique:users,username,'.$user->id,
+            "email" => 'required|email:dns|unique:users,email,'.$user->id,
+            "password" => 'required|max:255',
+        ]);
+        $validatedData['password'] = bcrypt($validatedData['password']);
+        $validatedData['is_admin'] = $request->role;
+        User::where("id", $user->id)->update($validatedData);
+        return redirect('/dashboard/users')->with('success', 'Registration successfull!');
     }
 
     /**
